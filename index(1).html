@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriScan — Turn every meal into data</title>
+<meta name="description" content="Snap a photo, say what you ate, or log a preset. NutriScan turns every meal into calories, protein, carbs, and fat — instantly.">
+<link rel="icon" type="image/png" href="icon.png">
+
+<!-- LinkedIn Insight Tag -->
+<script type="text/javascript">
+_linkedin_partner_id = "REPLACE_WITH_YOUR_PARTNER_ID";
+window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+</script>
+<script type="text/javascript">
+(function(l) {
+if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+window.lintrk.q=[]}
+var s = document.getElementsByTagName("script")[0];
+var b = document.createElement("script");
+b.type = "text/javascript";b.async = true;
+b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+s.parentNode.insertBefore(b, s);})(window.lintrk);
+</script>
+<noscript>
+<img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=REPLACE_WITH_YOUR_PARTNER_ID&fmt=gif" />
+</noscript>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#FAF7F2;
+    --paper-dim:#F1ECE2;
+    --ink:#0F1A14;
+    --ink-soft:#5C5A52;
+    --line:#DDD6C7;
+    --lime:#5FE89A;
+    --lime-deep:#2FAE6B;
+    --rust:#C9622E;
+    --rust-soft:#F2DCCB;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter Tight',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  a{color:inherit;}
+
+  img{max-width:100%;display:block;}
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    border-bottom:1px solid var(--line);
+    padding:20px 0;
+    position:sticky;
+    top:0;
+    background:rgba(250,247,242,0.92);
+    backdrop-filter:blur(6px);
+    z-index:50;
+  }
+  .nav .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-weight:800;
+    font-size:18px;
+    letter-spacing:-0.02em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .logo img{
+    width:26px;height:26px;
+    border-radius:7px;
+  }
+  .nav-cta{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    font-weight:500;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    padding:9px 16px;
+    border-radius:3px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-cta:hover{background:var(--ink);color:var(--paper);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:72px 0 56px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--lime-deep);
+    font-weight:700;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:18px;height:1px;
+    background:var(--lime-deep);
+  }
+  h1{
+    font-size:50px;
+    line-height:1.04;
+    letter-spacing:-0.025em;
+    font-weight:800;
+    margin-bottom:22px;
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--lime-deep);
+  }
+  .hero-sub{
+    font-size:17px;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    padding:14px 22px;
+    border-radius:4px;
+    font-weight:600;
+    font-size:15px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn-primary:hover{background:var(--lime-deep);transform:translateY(-1px);}
+  .btn-primary svg{width:16px;height:16px;}
+  .free-note{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- SCAN DEMO ---------- */
+  .scan-card{
+    background:var(--ink);
+    border-radius:12px;
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 20px 50px -20px rgba(26,26,23,0.4);
+  }
+  .scan-photo{
+    background:linear-gradient(135deg,#1B2920,#0F1A14);
+    border-radius:7px;
+    aspect-ratio:4/3;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .scan-photo .placeholder-icon{
+    color:rgba(250,247,242,0.18);
+    font-size:13px;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.05em;
+    text-align:center;
+  }
+  .reticle{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+  }
+  .reticle .corner{
+    position:absolute;
+    width:22px;height:22px;
+    border:2px solid var(--lime);
+    opacity:0;
+    animation:cornerIn .6s ease forwards;
+  }
+  .corner.tl{top:14px;left:14px;border-right:none;border-bottom:none;animation-delay:.1s;}
+  .corner.tr{top:14px;right:14px;border-left:none;border-bottom:none;animation-delay:.2s;}
+  .corner.bl{bottom:14px;left:14px;border-right:none;border-top:none;animation-delay:.3s;}
+  .corner.br{bottom:14px;right:14px;border-left:none;border-top:none;animation-delay:.4s;}
+  @keyframes cornerIn{to{opacity:1;}}
+
+  .scan-line{
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:var(--lime);
+    box-shadow:0 0 14px 2px rgba(159,232,112,0.7);
+    animation:sweep 2.6s ease-in-out infinite;
+    animation-delay:.5s;
+    opacity:0;
+  }
+  @keyframes sweep{
+    0%{top:8%;opacity:0;}
+    8%{opacity:1;}
+    50%{top:92%;opacity:1;}
+    58%{opacity:0;}
+    100%{top:92%;opacity:0;}
+  }
+
+  .readout{
+    margin-top:14px;
+    background:#172420;
+    border-radius:7px;
+    padding:16px;
+  }
+  .readout-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:7px 0;
+    border-bottom:1px solid rgba(250,247,242,0.08);
+  }
+  .readout-row:last-child{border-bottom:none;}
+  .readout-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:rgba(250,247,242,0.5);
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .readout-val{
+    font-family:'JetBrains Mono',monospace;
+    font-size:15px;
+    font-weight:700;
+    color:var(--paper);
+  }
+  .readout-val.accent{color:var(--lime);}
+
+  /* ---------- LOG STRIP ---------- */
+  .log-strip{
+    border-bottom:1px solid var(--line);
+    background:var(--paper-dim);
+  }
+  .log-strip .wrap{
+    display:flex;
+    gap:0;
+    overflow-x:auto;
+    padding:0;
+  }
+  .log-item{
+    flex:1;
+    min-width:160px;
+    padding:22px 20px;
+    border-right:1px solid var(--line);
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+  }
+  .log-item:last-child{border-right:none;}
+  .log-item .n{
+    color:var(--lime-deep);
+    font-weight:700;
+    display:block;
+    margin-bottom:4px;
+  }
+  .log-item .d{color:var(--ink-soft);}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:36px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px;
+    gap:24px;
+  }
+  .section-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+  }
+  h2{
+    font-size:30px;
+    letter-spacing:-0.02em;
+    font-weight:800;
+  }
+
+  /* ---------- FREE FEATURES TABLE ---------- */
+  .feat-table{
+    border-top:1px solid var(--line);
+  }
+  .feat-row{
+    display:grid;
+    grid-template-columns:48px 1fr 1.4fr;
+    gap:20px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+    align-items:start;
+  }
+  .feat-row .idx{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding-top:3px;
+  }
+  .feat-row .name{
+    font-weight:700;
+    font-size:15.5px;
+  }
+  .feat-row .desc{
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+
+  /* ---------- PRO SECTION ---------- */
+  .pro-section{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:14px;
+    padding:48px;
+    margin:0 28px;
+    max-width:1024px;
+    margin-inline:auto;
+  }
+  .pro-section .section-head{
+    border-bottom-color:rgba(250,247,242,0.15);
+  }
+  .pro-section .section-label{color:var(--rust);}
+  .pro-section h2{color:var(--paper);}
+  .pro-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:rgba(250,247,242,0.12);
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .pro-card{
+    background:#172420;
+    padding:22px;
+  }
+  .pro-card .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--rust);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:10px;
+    display:block;
+  }
+  .pro-card h3{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:8px;
+    letter-spacing:-0.01em;
+  }
+  .pro-card p{
+    font-size:13.5px;
+    color:rgba(250,247,242,0.62);
+    line-height:1.5;
+  }
+  .pro-pricing{
+    margin-top:32px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .price-pill{
+    border:1px solid rgba(250,247,242,0.25);
+    border-radius:6px;
+    padding:14px 20px;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .price-pill .amt{font-size:20px;font-weight:700;}
+  .price-pill .per{font-size:12px;color:rgba(250,247,242,0.55);}
+  .price-pill.best{border-color:var(--lime);background:rgba(159,232,112,0.06);}
+  .price-pill.best .amt{color:var(--lime);}
+  .save-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    background:var(--lime);
+    color:var(--ink);
+    padding:3px 8px;
+    border-radius:3px;
+    font-weight:700;
+    margin-left:8px;
+  }
+
+  /* ---------- CARE CENTER CALLOUT ---------- */
+  .care{
+    border:1px solid var(--line);
+    border-left:4px solid var(--lime-deep);
+    border-radius:6px;
+    padding:28px 32px;
+    background:var(--paper-dim);
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:24px;
+    align-items:center;
+  }
+  .care h3{font-size:18px;margin-bottom:8px;}
+  .care p{color:var(--ink-soft);font-size:14.5px;max-width:56ch;}
+  .care-icon{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--lime-deep);
+    text-align:right;
+    line-height:1.6;
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    text-align:center;
+    padding:80px 0 90px;
+  }
+  .final-cta h2{
+    font-size:36px;
+    max-width:20ch;
+    margin:0 auto 16px;
+  }
+  .final-cta .hero-sub{margin-left:auto;margin-right:auto;text-align:center;}
+  .final-cta .hero-ctas{justify-content:center;margin-top:28px;}
+  .disclaimer{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    max-width:60ch;
+    margin:36px auto 0;
+    line-height:1.6;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 0;
+  }
+  footer .wrap{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  footer a{text-decoration:none;}
+  footer a:hover{color:var(--ink);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    h1{font-size:38px;}
+    .pro-grid{grid-template-columns:1fr;}
+    .pro-section{padding:32px 24px;margin:0 16px;}
+    .feat-row{grid-template-columns:32px 1fr;}
+    .feat-row .desc{grid-column:2;}
+    .care{grid-template-columns:1fr;text-align:left;}
+    .care-icon{text-align:left;}
+    .log-strip .wrap{flex-direction:column;}
+    .log-item{border-right:none;border-bottom:1px solid var(--line);}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .scan-line,.corner{animation:none !important;opacity:1;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="logo"><img src="icon.png" alt="NutriScan icon">NutriScan</div>
+    <a class="nav-cta" href="https://apps.apple.com/app/id6775319090" id="nav-cta">Get the app</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">AI nutrition logging</div>
+      <h1>Turn every meal into <em>actionable data.</em></h1>
+      <p class="hero-sub">Snap a photo, describe a dish out loud, or tap a preset. NutriScan reads your food and returns calories, protein, carbs, and fat — in seconds, not spreadsheets.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="https://apps.apple.com/app/id6775319090" id="hero-cta">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          Download on the App Store
+        </a>
+        <span class="free-note">Free to start · No card required</span>
+      </div>
+    </div>
+
+    <div class="scan-card">
+      <div class="scan-photo">
+        <img src="icon.png" alt="NutriScan app icon" style="width:62%;border-radius:14px;box-shadow:0 12px 30px -10px rgba(0,0,0,0.5);">
+        <div class="reticle">
+          <span class="corner tl"></span>
+          <span class="corner tr"></span>
+          <span class="corner bl"></span>
+          <span class="corner br"></span>
+          <span class="scan-line"></span>
+        </div>
+      </div>
+      <div class="readout">
+        <div class="readout-row">
+          <span class="readout-label">Calories</span>
+          <span class="readout-val accent">612 kcal</span>
+        </div>
+        <div class="readout-row">
+          <span class="readout-label">Protein</span>
+          <span class="readout-val">38 g</span>
+        </div>
+        <div class="readout-row">
+          <span class="readout-label">Carbs</span>
+          <span class="readout-val">54 g</span>
+        </div>
+        <div class="readout-row">
+          <span class="readout-label">Fat</span>
+          <span class="readout-val">22 g</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="log-strip">
+  <div class="wrap">
+    <div class="log-item"><span class="n">CAMERA</span><span class="d">Point at any meal, get a full breakdown</span></div>
+    <div class="log-item"><span class="n">VOICE</span><span class="d">Say what you ate, it's logged instantly</span></div>
+    <div class="log-item"><span class="n">TEXT</span><span class="d">Describe a dish, skip the photo</span></div>
+    <div class="log-item"><span class="n">PRESET</span><span class="d">One tap for meals you eat often</span></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What you get, free</h2>
+      <span class="section-label">No subscription required</span>
+    </div>
+    <div class="feat-table">
+      <div class="feat-row">
+        <span class="idx">01</span>
+        <span class="name">Daily calorie ring & macro tracking</span>
+        <span class="desc">See exactly where today stands against your targets, updated as you log.</span>
+      </div>
+      <div class="feat-row">
+        <span class="idx">02</span>
+        <span class="name">Streak tracker</span>
+        <span class="desc">A 14-day calendar that builds the logging habit instead of just measuring it.</span>
+      </div>
+      <div class="feat-row">
+        <span class="idx">03</span>
+        <span class="name">Leaderboard & achievements</span>
+        <span class="desc">Compete on streaks and meals logged. Earn badges for consistency, not perfection.</span>
+      </div>
+      <div class="feat-row">
+        <span class="idx">04</span>
+        <span class="name">Apple Health sync</span>
+        <span class="desc">Steps, calories, sleep, and weight flow in automatically — one picture, not five apps.</span>
+      </div>
+      <div class="feat-row">
+        <span class="idx">05</span>
+        <span class="name">Cloud sync & guest mode</span>
+        <span class="desc">Try it without an account. Create one when you're ready, and your data follows you.</span>
+      </div>
+      <div class="feat-row">
+        <span class="idx">06</span>
+        <span class="name">Custom foods & manual targets</span>
+        <span class="desc">Metric or imperial, your own calorie/macro goals, your own avatar. Dark mode included.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="pro-section">
+    <div class="section-head">
+      <h2>Pro Intelligence Hub</h2>
+      <span class="section-label">Optional subscription</span>
+    </div>
+    <div class="pro-grid">
+      <div class="pro-card">
+        <span class="tag">Metabolism</span>
+        <h3>AI Metabolic Twin</h3>
+        <p>Your estimated real TDEE, calculated from how you actually eat — not a generic formula.</p>
+      </div>
+      <div class="pro-card">
+        <span class="tag">Micronutrients</span>
+        <h3>Nutrient Deficiency Radar</h3>
+        <p>Flags micronutrient gaps in your logged meals and recommends foods to close them.</p>
+      </div>
+      <div class="pro-card">
+        <span class="tag">Meal design</span>
+        <h3>Meal Synergy Score</h3>
+        <p>Rates how well the foods in a meal work together nutritionally — not just their totals.</p>
+      </div>
+      <div class="pro-card">
+        <span class="tag">Goals</span>
+        <h3>Adaptive Goal Engine</h3>
+        <p>Adjusts your calorie target automatically based on your real adherence, not a fixed plan.</p>
+      </div>
+      <div class="pro-card">
+        <span class="tag">Forecasting</span>
+        <h3>12-Week Body Composition Forecast</h3>
+        <p>Projects your weight trajectory forward from your current logging patterns.</p>
+      </div>
+      <div class="pro-card">
+        <span class="tag">Satiety</span>
+        <h3>Satiety Index</h3>
+        <p>A hunger-suppression score for every meal, so you can log for fullness, not just macros.</p>
+      </div>
+    </div>
+    <div class="pro-pricing">
+      <div class="price-pill">
+        <div class="amt">$4.99<span style="font-size:12px;font-weight:400;"> /mo</span></div>
+        <div class="per">Monthly</div>
+      </div>
+      <div class="price-pill best">
+        <div class="amt">$29<span style="font-size:12px;font-weight:400;"> /yr</span><span class="save-tag">SAVE 50%+</span></div>
+        <div class="per">Annual — best value</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="care">
+      <div>
+        <h3>Food Security & Care Center</h3>
+        <p>Built into the free app: find food banks, SNAP retailers, WIC offices, free meals, and farmers markets near you — with addresses, hours, and directions.</p>
+      </div>
+      <div class="care-icon">FOOD BANKS<br>SNAP RETAILERS<br>WIC OFFICES<br>FREE MEALS</div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap">
+    <h2>Start logging in under a minute.</h2>
+    <p class="hero-sub">Guest mode lets you try NutriScan before creating an account. No commitment, no card.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="https://apps.apple.com/app/id6775319090" id="final-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.08l-.01.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+    <p class="disclaimer">Nutritional values are AI-generated estimates and should not be used as medical or dietary advice. Always consult a healthcare professional for medical decisions. Pro subscriptions renew automatically unless cancelled at least 24 hours before the period ends; manage anytime in your Apple ID settings.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 NutriScan</span>
+    <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms of Use</a>
+  </div>
+</footer>
+
+<script>
+  // Fire LinkedIn conversion event on any App Store CTA click
+  document.querySelectorAll('#hero-cta, #final-cta, #nav-cta').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if (window.lintrk) {
+        window.lintrk('track', { conversion_id: 'REPLACE_WITH_YOUR_CONVERSION_ID' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
